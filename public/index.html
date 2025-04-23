@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistema de Estoque 011 BRASIL</title>
+  <link rel="shortcut icon" href="/public/src/fundo_tab_1.ico">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>SISTEMA DE ESTOQUE <span id="spnh1">011 Brasil</span></h1>
+
+    <button class="btn-verde" onclick="mostrarAdicionar()">➕ ADICIONAR ITEM</button>
+    <button class="btn-cinza" onclick="mostrarEstoque()">📦 VER ESTOQUE</button>
+
+    <div id="conteudo"></div>
+
+    <!-- Formulário para adicionar item -->
+    <div id="formularioAdicionar" class="form-container" style="display: none;">
+      <h2>ADICIONAR NO ESTOQUE</h2>
+
+      <form id="formAdicionar">
+        <div class="form-linha">
+          <label for="nome">NOME</label>
+          <input type="text" id="nome" required placeholder="Ex: Cabo RJ45" />
+        </div>
+
+        <div class="form-linha">
+          <label for="quantidade">QUANTIDADE</label>
+          <input type="number" id="quantidade" value="1" min="1" required />
+        </div>
+
+        <div class="form-linha">
+          <label for="descricao">DESCRIÇÃO</label>
+          <textarea id="descricao" placeholder="(DESCRIÇÃO PADRÃO DO SISTEMA)"></textarea>
+        </div>
+
+        <div class="form-botoes">
+          <button type="submit" class="btn-verde">ADICIONAR</button>
+          <button type="button" class="btn-cinza" onclick="cancelarAdicionar()">↩ CANCELAR</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
