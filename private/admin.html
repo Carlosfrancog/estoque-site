@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Edição de Estoque</title>
+  <link rel="stylesheet" href="css/adminstyle.css" />
+  <link rel="shortcut icon" href="/ESTOQUE_SITE/public/src/icon.ico">
+</head>
+<body>
+  <div class="container">
+    <h1>PAINEL ADMINISTRATIVO DO ESTOQUE <span id="spnh1">011 Brasil</span></h1>
+
+    <!-- Botões de navegação, visíveis só depois do login -->
+    <div id="admin-buttons" class="botoes-centro" style="display: none;">
+      <a href="../public/index.html"><button class="btn-voltar">↩ VOLTAR</button></a>
+      <button class="btn-salvar" onclick="salvarAlteracoes()">💾 SALVAR ALTERAÇÕES</button>
+    </div>
+
+    <!-- Login -->
+    <div id="login-container" class="login-container">
+      <h2>🔒 Área Administrativa</h2>
+      <form id="formLogin">
+        <div class="form-linha">
+          <label for="usuario">Usuário</label>
+          <input type="text" id="usuario" required placeholder="Digite o usuário" />
+        </div>
+
+        <div class="form-linha">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" required placeholder="Digite a senha" />
+        </div>
+
+        <button type="submit" class="btn-login">Entrar</button>
+      </form>
+      <p id="mensagemErro" class="mensagem-erro" style="display: none;"></p>
+    </div>
+
+    <!-- Área de edição, oculta até o login -->
+    <div id="admin-content" style="display: none;">
+        <div class="form-linha">
+            <input
+              type="text"
+              id="filtroBusca"
+              placeholder="🔍 Buscar por nome ou código"
+              oninput="filtrarEstoqueAdmin()"
+              class="input-busca"
+            />
+          </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Código</th>
+              <th>Quantidade</th>
+              <th>Descrição</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyAdmin">
+            <!-- Os itens do estoque com inputs vão aparecer aqui -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="popupConfirmacao" class="popup">
+    <div class="popup-conteudo">
+      <h3>Deseja salvar todas as alterações?</h3>
+      <p id="logAlteracoes"></p>
+      <div class="popup-botoes">
+        <button onclick="fecharPopup()">Cancelar</button>
+        <button onclick="confirmarSalvarTudo()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="javascript/admin.js"></script>
+</body>
+</html>

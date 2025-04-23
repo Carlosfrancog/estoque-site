@@ -4,16 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sistema de Estoque 011 BRASIL</title>
-  <link rel="shortcut icon" href="/public/src/fundo_tab_1.ico">
-  <link rel="stylesheet" href="style.css" />
+  <link rel="shortcut icon" href="src/icon.ico">
+  <link rel="stylesheet" href="css/indexstyle.css" />
 </head>
 <body>
   <div class="container">
     <h1>SISTEMA DE ESTOQUE <span id="spnh1">011 Brasil</span></h1>
 
-    <button class="btn-verde" onclick="mostrarAdicionar()">➕ ADICIONAR ITEM</button>
-    <button class="btn-cinza" onclick="mostrarEstoque()">📦 VER ESTOQUE</button>
-
+    <div id="botoes">
+      <button class="btn-showItem" onclick="mostrarEstoque()">📦 VER ESTOQUE</button>
+      <a href="../private/admin.html" clas><button class="btn-edit">📝EDITAR ESTOQUE</button></a>
+      <button class="btn-addItem" onclick="mostrarAdicionar()">➕ ADICIONAR ITEM</button>
+      <button class="btn-csv" onclick="exportarCSV()">💾 EXPORTAR ESTOQUE</button>
+    </div>
     <div id="conteudo"></div>
 
     <!-- Formulário para adicionar item -->
@@ -37,13 +40,13 @@
         </div>
 
         <div class="form-botoes">
-          <button type="submit" class="btn-verde">ADICIONAR</button>
-          <button type="button" class="btn-cinza" onclick="cancelarAdicionar()">↩ CANCELAR</button>
+          <button type="submit" class="btn-addItem">ADICIONAR</button>
+          <button type="button" class="btn-cancel" onclick="cancelarAdicionar()">↩ CANCELAR</button>
         </div>
       </form>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="/ESTOQUE_SITE/public/javascript/script.js"></script>
 </body>
 </html>

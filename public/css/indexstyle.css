@@ -1,0 +1,297 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 12px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.btn-addItem {
+  background-color: #28a745;
+  color: white;
+  border: 2px solid #000000;
+
+}
+
+.btn-addItem:hover {
+  background-color: #218838;
+}
+
+.btn-showItem {
+  background-color: #6c757d;
+  color: white;
+  border: 2px solid #000000;
+}
+
+.btn-showItem:hover {
+  background-color: #5a6268;
+}
+
+
+.btn-csv {
+  background-color: #007bff;
+  color: white;
+  border: 2px solid #000000;
+}
+
+#botoes {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-edit {
+  background-color: #cfa117;
+  color: white;
+  border: 2px solid #000000;
+}
+
+.btn-edit:hover {
+  background-color: #b59414;
+}
+
+/* ===================== */
+/* === TABELA ESTOQUE === */
+/* ===================== */
+
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 1em;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+  padding: 10px 15px;
+  text-align: left;
+  border: 1px solid #000000;
+}
+
+thead {
+  background-color: #007BFF;
+  color: rgb(0, 0, 0);
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #d4eaff;
+}
+
+/* === FILTROS E INPUTS === */
+.filtro-container {
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.filtro-container label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.filtro-container input, 
+.filtro-container select {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* === BOTÃO EXPORTAR CSV === */
+.btn-csv {
+
+  padding: 10px 16px;
+  margin-left: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.btn-csv:hover {
+  background-color: #0952a0;
+}
+
+.btn-cancel {
+  background-color: red;
+  color: white;
+  border: 2px solid #000000;
+}
+
+.btn-cancel:hover {
+  background-color: #c82333;
+}
+
+.form-container {
+  margin-top: 20px;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.container #spnh1 {
+  text-decoration: underline;
+}
+
+.form-linha {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-botoes {
+  display: flex;
+  gap: 10px;
+}
+
+/* Filtro fixo */
+.filtro-container {
+  position: sticky;
+  top: 20px;
+  z-index: 10;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.filtro-container label {
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f8f8f8;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  .form-container {
+    padding: 15px;
+  }
+
+  .form-botoes {
+    flex-direction: column;
+  }
+
+  table {
+    font-size: 0.9em;
+  }
+
+  .table-responsive {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.2em;
+  }
+
+  button {
+    padding: 8px 16px;
+  }
+
+  .form-container {
+    padding: 10px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    font-size: 0.9em;
+  }
+
+  table {
+    font-size: 0.8em;
+  }
+
+  .form-botoes {
+    flex-direction: column;
+  }
+
+  .table-responsive {
+    margin-top: 10px;
+  }
+}
