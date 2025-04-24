@@ -49,11 +49,11 @@
     "ultimaAtualizacao": "2025-04-17T13:26:03.827263"
   },
   {
-    "nome": "MOUSE RAZER KRAIT 2013",
+    "nome": "FONTE 450 W GENÉRICA",
     "codigo": "8997",
     "quantidade": 1,
-    "descricao": "Periféricos",
-    "ultimaAtualizacao": "2025-04-17T13:26:03.827263"
+    "descricao": "Fontes de Alimentação",
+    "ultimaAtualizacao": "2025-04-24T19:57:51.021Z"
   },
   {
     "nome": "MOUSE MULTILASER WARRIOR RAGNAR KEON TC223",
@@ -126,11 +126,11 @@
     "ultimaAtualizacao": "2025-04-17T13:26:03.827263"
   },
   {
-    "nome": "CÂMERA ONIX 3020-2.0 MP",
+    "nome": "CABO DVI",
     "codigo": "1163",
-    "quantidade": 1,
-    "descricao": "Periféricos",
-    "ultimaAtualizacao": "2025-04-17T13:26:03.827263"
+    "quantidade": 3,
+    "descricao": "Cabos e Conectores",
+    "ultimaAtualizacao": "2025-04-24T19:57:51.021Z"
   },
   {
     "nome": "HDD 1 TB SATA I",
@@ -224,11 +224,11 @@
     "ultimaAtualizacao": "2025-04-17T13:26:03.827263"
   },
   {
-    "nome": "SSD NVME M.2 500 GB",
+    "nome": "RODA DE CADEIRA",
     "codigo": "3331",
-    "quantidade": 1,
-    "descricao": "Armazenamento",
-    "ultimaAtualizacao": "2025-04-17T13:26:03.827263"
+    "quantidade": 6,
+    "descricao": "Diversos",
+    "ultimaAtualizacao": "2025-04-24T19:57:51.021Z"
   },
   {
     "nome": "PENTE DE MEMÓRIA 2 GB DDR3",
@@ -959,10 +959,10 @@
     "ultimaAtualizacao": "2025-04-22T14:34:01.363Z"
   },
   {
-    "nome": "Teste-item",
-    "quantidade": 1,
-    "descricao": " Outros",
+    "nome": "Teste-item-teste",
+    "quantidade": 0,
+    "descricao": "Outros",
     "codigo": "8165",
-    "ultimaAtualizacao": "2025-04-23T18:36:48.553Z"
+    "ultimaAtualizacao": "2025-04-24T19:57:40.929Z"
   }
 ]

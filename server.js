@@ -19,72 +19,77 @@ const estoquePath = path.join(__dirname, 'data', 'estoque.json');
 
 // Função para gerar um novo ID
 const gerarId = (estoque) => {
-  // Gera um ID único baseado no timestamp e tamanho do estoque
-  return (estoque.length > 0) ? Math.max(...estoque.map(item => item.codigo)) + 1 : 1;
+  return (estoque.length > 0) ? Math.max(...estoque.map(item => parseInt(item.codigo))) + 1 : 1;
 };
 
 // GET estoque
 app.get('/api/estoque', (req, res) => {
-    fs.readFile(estoquePath, 'utf-8', (err, data) => {
-      if (err) {
-        return res.status(500).send('Erro ao ler o estoque');
-      }
-  
-      let estoque = JSON.parse(data);
-  
-      // Adicionando log para verificar os dados lidos
-      //console.log('Estoque lido:', estoque);
-  
-      // Garantir que o campo 'codigo' é tratado como inteiro
-      estoque = estoque.map(item => {
-        if (item.codigo === undefined) {
-          console.warn('Campo "codigo" não encontrado, criando um código único.');
-          item.codigo = Math.floor(Math.random() * 1000);  // Gerando um código único, se não existir
-        } else {
-          item.codigo = parseInt(item.codigo, 10);  // Garantir que 'codigo' seja um número inteiro
-        }
-  
-        return item;
-      });
-  
-      // Adicionando log para verificar como os dados foram manipulados
-      //console.log('Estoque após manipulação:', estoque);
-  
-      res.json(estoque);
-    });
-  });
-
-// POST item
-app.post('/api/estoque', (req, res) => {
-  const novoItem = req.body;
   fs.readFile(estoquePath, 'utf-8', (err, data) => {
-    if (err) return res.status(500).send('Erro ao ler o estoque');
+    if (err) {
+      return res.status(500).send('Erro ao ler o estoque');
+    }
+
     let estoque = JSON.parse(data);
 
-    // Adiciona um novo id se não houver um
-    if (!novoItem.codigo) {
-      novoItem.codigo = gerarId(estoque);
-    }
+    // Garantir que o campo 'codigo' é tratado como inteiro
+    estoque = estoque.map(item => {
+      if (item.codigo === undefined) {
+        console.warn('Campo "codigo" não encontrado, criando um código único.');
+        item.codigo = Math.floor(Math.random() * 1000);
+      } else {
+        item.codigo = parseInt(item.codigo, 10);
+      }
+      return item;
+    });
 
-    // Comparação por nome semelhante (ignorando caixa e espaços extras)
-    const itemExistente = estoque.find(item => item.nome.trim().toLowerCase() === novoItem.nome.trim().toLowerCase());
-    if (itemExistente) {
-      itemExistente.quantidade += novoItem.quantidade;
-      itemExistente.ultimaAtualizacao = new Date().toISOString();
-    } else {
-      novoItem.ultimaAtualizacao = new Date().toISOString();
-      estoque.push(novoItem);
-    }
+    res.json(estoque);
+  });
+});
 
-    // Converte todos os ids para string antes de salvar
+// POST item (aceita único item ou múltiplos)
+app.post('/api/estoque', (req, res) => {
+  const dadosRecebidos = req.body;
+
+  fs.readFile(estoquePath, 'utf-8', (err, data) => {
+    if (err) return res.status(500).send('Erro ao ler o estoque');
+
+    let estoque = JSON.parse(data);
+    let alteracoes = Array.isArray(dadosRecebidos) ? dadosRecebidos : [dadosRecebidos];
+
+    alteracoes.forEach(novoItem => {
+      // Garante que todos os campos estão presentes
+      novoItem.nome = novoItem.nome?.trim();
+      novoItem.descricao = novoItem.descricao?.trim();
+      novoItem.quantidade = parseInt(novoItem.quantidade, 10) || 0;
+
+      if (!novoItem.codigo) {
+        novoItem.codigo = gerarId(estoque);
+      }
+
+      const itemExistente = estoque.find(item => item.codigo.toString() === novoItem.codigo.toString());
+
+      if (itemExistente) {
+        // Atualiza o item existente
+        itemExistente.nome = novoItem.nome;
+        itemExistente.quantidade = novoItem.quantidade;
+        itemExistente.descricao = novoItem.descricao;
+        itemExistente.ultimaAtualizacao = new Date().toISOString();
+      } else {
+        // Insere novo item
+        novoItem.ultimaAtualizacao = new Date().toISOString();
+        estoque.push(novoItem);
+      }
+    });
+
+    // Converte os códigos para string
     estoque = estoque.map(item => {
       item.codigo = item.codigo.toString();
       return item;
     });
 
     fs.writeFile(estoquePath, JSON.stringify(estoque, null, 2), err => {
-      if (err) return res.status(500).send('Erro ao salvar o item');
-      res.status(200).send('Item salvo com sucesso');
+      if (err) return res.status(500).send('Erro ao salvar as alterações');
+      res.status(200).send('Alterações salvas com sucesso');
     });
   });
 });
