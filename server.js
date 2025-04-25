@@ -96,6 +96,7 @@ app.post('/api/estoque', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Acesse a interface em http://localhost:${PORT}/public/index.html`);
 });
 
 // DELETE item por código

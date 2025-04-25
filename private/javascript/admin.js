@@ -1,6 +1,6 @@
 let estoqueOriginal = [];
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const formLogin = document.getElementById("formLogin");
   const mensagemErro = document.getElementById("mensagemErro");
 
@@ -37,12 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Erro ao autenticar:", error);
       mostrarErro("Erro ao carregar dados de login. Verifique o caminho do JSON.");
     }
-  });
 
   function mostrarErro(texto) {
     mensagemErro.textContent = texto;
     mensagemErro.style.display = "block";
   }
+}); // Closing brace for DOMContentLoaded event listener
 });
 
 async function carregarEstoqueParaEdicao() {
@@ -163,6 +163,108 @@ function salvarItem(codigo) {
 
   console.log("Item salvo:", itemAtualizado);
 }
+
+// Mostra o formulário de adição
+function mostrarAdicionar() {
+  const formularioAdicionar = document.getElementById('formularioAdicionar');
+  if (formularioAdicionar) {
+    formularioAdicionar.style.display = 'block';
+  } else {
+    console.error("Elemento 'formularioAdicionar' não encontrado.");
+  }
+}
+
+// Oculta o formulário de adição
+function cancelarAdicionar() {
+  const formularioAdicionar = document.getElementById('formularioAdicionar');
+  if (formularioAdicionar) {
+    formularioAdicionar.style.display = 'none';
+  } else {
+    console.error("Elemento 'formularioAdicionar' não encontrado.");
+  }
+}
+
+// Lida com o envio do formulário de adição
+document.getElementById('formAdicionar').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const nome = document.getElementById('nome').value.trim();
+  const quantidade = parseInt(document.getElementById('quantidade').value, 10);
+  const descricao = document.getElementById('descricao').value.trim();
+
+  // Função para classificar automaticamente a categoria com base no nome do item
+  function classificarCategoria(nome) {
+    const nomeUpper = nome.toUpperCase();
+
+    const categorias = {
+      'Periféricos': ['TECLADO', 'MOUSE', 'WEBCAM', 'FONE', 'CÂMERA', 'TELEFONE'],
+      'Armazenamento': ['HDD', 'SSD', 'HD', 'NVME'],
+      'Memória e Processamento': ['MEMÓRIA', 'PROCESSADOR', 'PLACA MÃE'],
+      'Placas': ['PLACA DE VIDEO', 'PLACA DE REDE', 'CONTROLADORA', 'MODEM', 'KVM', 'HUB', 'PONTE'],
+      'Fontes de Alimentação': ['FONTE'],
+      'Cabos e Conectores': ['CABO', 'ADAPTADOR', 'EXTENSOR', 'LEITOR'],
+      'Refrigeração': ['COOLER', 'FAN', 'DISSIPADOR', 'WATER COOLER'],
+      'Diversos': ['RÉGUA', 'EXTENSÃO', 'SUPORTE', 'ANTENA', 'ESPELHO', 'SWITCH', 'PROTETOR', 'RODA', 'ESTABILIZADOR'],
+      'Equipamentos Completos': ['CPU', 'NOTEBOOK', 'MONITOR']
+    };
+
+    for (const [categoria, termos] of Object.entries(categorias)) {
+      if (termos.some(termo => nomeUpper.includes(termo))) {
+        return categoria;
+      }
+    }
+
+    return 'Outros';
+  }
+
+  // Função para gerar código aleatório único entre 0000 e 9999
+  function gerarCodigoUnico() {
+    let codigoGerado;
+    let codigoExistente = true;
+
+    while (codigoExistente) {
+      codigoGerado = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+      codigoExistente = estoqueOriginal.some(item => item.codigo === codigoGerado);
+    }
+
+    return codigoGerado;
+  }
+
+  // Classificar a categoria automaticamente
+  const categoria = classificarCategoria(nome);
+
+  // Adiciona a categoria ao final da descrição
+  const descricaoComCategoria = `${descricao} ${categoria}`;
+
+  // Gera o código único para o novo item
+  const codigo = gerarCodigoUnico();
+
+  const novoItem = {
+    nome,
+    quantidade,
+    descricao: descricaoComCategoria,
+    codigo,
+    ultimaAtualizacao: new Date().toISOString()
+  };
+
+  try {
+    const response = await fetch('http://localhost:3000/api/estoque', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(novoItem)
+    });
+
+    if (response.ok) {
+      alert('Item adicionado com sucesso!');
+      cancelarAdicionar();
+      carregarEstoqueParaEdicao(); // Atualiza a tabela com o novo item
+    } else {
+      alert('Erro ao adicionar item.');
+    }
+  } catch (err) {
+    console.error('Erro ao enviar dados:', err);
+  }
+});
 
 function salvarAlteracoes() {
   const linhas = document.querySelectorAll("#tbodyAdmin tr");
