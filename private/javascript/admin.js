@@ -90,11 +90,24 @@ function filtrarEstoqueAdmin() {
 }
 
 function excluirItem(codigo) {
-  const linha = document.querySelector(`tr[data-codigo='${codigo}']`);
-  if (linha) {
-    linha.remove();
-  }
+  if (!confirm(`Tem certeza que deseja excluir o item com código ${codigo}?`)) return;
+
+  fetch(`http://localhost:3000/api/estoque/${codigo}`, {
+    method: "DELETE"
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Erro ao excluir o item.");
+    }
+    alert("Item excluído com sucesso!");
+    carregarEstoqueParaEdicao(); // atualiza a lista na interface
+  })
+  .catch(error => {
+    console.error("Erro ao excluir item:", error);
+    alert("Erro ao excluir item. Verifique o console.");
+  });
 }
+
 
 function salvarItemIndividual(codigo) {
   const linha = document.querySelector(`tr[data-codigo="${codigo}"]`);
@@ -153,16 +166,38 @@ function salvarItem(codigo) {
 
 function salvarAlteracoes() {
   const linhas = document.querySelectorAll("#tbodyAdmin tr");
+  
   let log = "";
+  window.__alteracoesPendentes = [];
 
   linhas.forEach((linha) => {
-    const nome = linha.querySelector(".input-nome").value.trim();
     const codigo = linha.getAttribute("data-codigo");
+    const nome = linha.querySelector(".input-nome").value.trim();
     const quantidade = parseInt(linha.querySelector(".input-quantidade").value, 10);
     const descricao = linha.querySelector(".input-descricao").value.trim();
 
-    log += `✔ ${nome} (Código: ${codigo}, Qtde: ${quantidade})\n`;
+    const original = estoqueOriginal.find(item => item.codigo === codigo);
+
+    if (
+      original &&
+      (nome !== original.nome || quantidade !== original.quantidade || descricao !== original.descricao)
+    ) {
+      const alteracao = {
+        nome,
+        codigo,
+        quantidade,
+        descricao,
+        atualizado: new Date().toLocaleString()
+      };
+      window.__alteracoesPendentes.push(alteracao);
+      log += `Item ${codigo} alterado: Nome: ${nome}, Quantidade: ${quantidade}, Descrição: ${descricao}\n`;
+    }
   });
+
+  if (window.__alteracoesPendentes.length === 0) {
+    alert("Nenhuma alteração detectada.");
+    return;
+  }
 
   document.getElementById("logAlteracoes").textContent = log;
   document.getElementById("popupConfirmacao").style.display = "flex";

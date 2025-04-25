@@ -97,3 +97,24 @@ app.post('/api/estoque', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
+
+// DELETE item por código
+app.delete('/api/estoque/:codigo', (req, res) => {
+  const codigo = req.params.codigo;
+
+  fs.readFile(estoquePath, 'utf-8', (err, data) => {
+    if (err) return res.status(500).send('Erro ao ler o estoque');
+
+    let estoque = JSON.parse(data);
+    const novoEstoque = estoque.filter(item => item.codigo.toString() !== codigo.toString());
+
+    if (estoque.length === novoEstoque.length) {
+      return res.status(404).send('Item não encontrado');
+    }
+
+    fs.writeFile(estoquePath, JSON.stringify(novoEstoque, null, 2), err => {
+      if (err) return res.status(500).send('Erro ao salvar as alterações após exclusão');
+      res.status(200).send('Item excluído com sucesso');
+    });
+  });
+});
